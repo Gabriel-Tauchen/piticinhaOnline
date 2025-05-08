@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pessoa {
+  email String @id
+  nome String 
+  senha String
+  cliente Cliente? @relation("pessoaCliente")
+  funcionario Funcionario? @relation("pessoaFuncionario")
+}
+
+model Cliente {
+  emailCliente String @id
+  pessoa Pessoa @relation("pessoaCliente", fields: [emailCliente], references: [email])
+  endereco String
+  telefone String
+  avaliacoes Avaliacao[]
+  pedidos Pedido[]
+}
+
+model Funcionario{
+  emailFuncionario String @id
+  pessoa Pessoa @relation("pessoaFuncionario", fields: [emailFuncionario], references: [email])
+  cargo String
+  pedidos Pedido[]
+}
+
+model Avaliacao{
+  idAvaliacao Int @id
+  nota Int
+  comentario String
+  data DateTime
+  cliente Cliente @relation(fields: [emailCliente], references: [emailCliente])
+  emailCliente String
+  pedido Pedido?
+  }
+
+model Pedido {
+  idPedido Int @id
+  valotTotal Int
+  statusPedido StatusPedido
+  cliente Cliente @relation(fields: [emailCliente], references: [emailCliente])
+  emailCliente String
+  funcionario Funcionario @relation(fields: [emailFuncionario], references: [emailFuncionario])
+  emailFuncionario String
+  carrinhoDeCompras CarrinhoDeCompras @relation(fields: [idCarrinho], references: [idCarrinho])
+  idCarrinho Int @unique
+  entrega Entrega @relation(fields: [idEntrega], references: [idEntrega])
+  idEntrega Int @unique
+  pagamento Pagamento @relation(fields: [idPagamento], references: [idPagamento])
+  idPagamento Int @unique
+  avaliacao Avaliacao @relation(fields: [idAvaliacao], references: [idAvaliacao])
+  idAvaliacao Int @unique
+}
+
+model Entrega{
+  idEntrega Int @id
+  tipoEntrega Int
+  tempoEstimado Int
+  pedido Pedido?
+}
+
+model Pagamento{
+  idPagamento Int @id
+  tipoPagamento Int
+  isPago Boolean
+  pedido Pedido?
+
+}
+
+enum StatusPedido{
+  PEDIDO_RECEBIDO
+  EM_PREPARO
+  ENVIADO
+  ENTREGUE
+}
+
+model CarrinhoDeCompras{
+  idCarrinho Int @id
+  subtotal Float
+  listaPizzas Pizza[]
+  pedido Pedido?
+}
+
+model Pizza{
+  idPizza Int @id
+  nome String
+  preco Float
+  tamanho Int
+  CarrinhoDeCompras CarrinhoDeCompras @relation(fields: [idCarrinho], references: [idCarrinho])
+  idCarrinho Int
+  Menu Menu @relation(fields: [idMenu], references: [idMenu])
+  idMenu Int
+  Ingrediente Ingrediente[]
+}
+
+model Ingrediente{
+  idIngrediente Int @id
+  nome String
+  preco Float
+  pizza Pizza[]
+}
+
+model Menu{
+  idMenu Int @id
+  listaPizzas Pizza[]
+}
