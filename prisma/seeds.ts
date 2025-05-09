@@ -18,7 +18,6 @@ async function main() {
       emailCliente: pessoa.email,
       endereco: 'Rua das Flores, 123',
       telefone: '31999999999',
-      //pessoa: { connect: { email: pessoa.email } },
     },
   });
 
@@ -45,11 +44,19 @@ async function main() {
     },
   });
 
+  // Criando um carrinho de compras
+  const carrinhoDeCompras = await prisma.carrinhoDeCompras.create({
+    data: {
+        idCarrinho: 0, 
+        subtotal: 0,
+    },
+  });
+
   // Criando uma pizza no menu
   const pizza = await prisma.pizza.create({
     data: {
       idPizza: 0,
-      idCarrinho: 0, 
+      idCarrinho: carrinhoDeCompras.idCarrinho, 
       nome: 'Margherita',
       preco: 35.5,
       tamanho: 8,
@@ -64,14 +71,6 @@ async function main() {
     },
   });
 
-  // Criando um carrinho de compras
-  const carrinhoDeCompras = await prisma.carrinhoDeCompras.create({
-    data: {
-        idCarrinho: 0, 
-        subtotal: pizza.preco,
-        listaPizzas: { connect: { idPizza: pizza.idPizza } },
-    },
-  });
 
   // Criando um pagamento
   const pagamento = await prisma.pagamento.create({
@@ -91,11 +90,23 @@ async function main() {
     },
   });
 
+// Criando uma avaliação associada ao pedido
+  const avalia = await prisma.avaliacao.create({
+    data: {
+      idAvaliacao: 0, 
+      nota: 5,
+      comentario: 'Entrega rápida e pizza deliciosa!',
+      data: new Date(),
+      emailCliente: cliente.emailCliente,
+    },
+  });
+
+
   // Criando um pedido
   const pedido = await prisma.pedido.create({
     data: {
       idPedido: 0, 
-      idAvaliacao: 0, 
+      idAvaliacao: avalia.idAvaliacao, 
       valotTotal: 30,
       statusPedido: StatusPedido.PEDIDO_RECEBIDO,
       emailCliente: cliente.emailCliente,
@@ -106,18 +117,7 @@ async function main() {
     },
   });
 
-  // Criando uma avaliação associada ao pedido
-  await prisma.avaliacao.create({
-    data: {
-      idAvaliacao: 0, 
-      nota: 5,
-      comentario: 'Entrega rápida e pizza deliciosa!',
-      data: new Date(),
-      emailCliente: cliente.emailCliente,
-      pedido: { connect: { idPedido: pedido.idPedido } },
-    },
-  });
-
+  
   console.log('Banco de dados populado com sucesso!');
 }
 

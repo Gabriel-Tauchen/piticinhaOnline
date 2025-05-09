@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seeds.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

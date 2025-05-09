@@ -45,6 +45,10 @@ CREATE TABLE "Pedido" (
     "statusPedido" "StatusPedido" NOT NULL,
     "emailCliente" TEXT NOT NULL,
     "emailFuncionario" TEXT NOT NULL,
+    "idCarrinho" INTEGER NOT NULL,
+    "idEntrega" INTEGER NOT NULL,
+    "idPagamento" INTEGER NOT NULL,
+    "idAvaliacao" INTEGER NOT NULL,
 
     CONSTRAINT "Pedido_pkey" PRIMARY KEY ("idPedido")
 );
@@ -92,7 +96,6 @@ CREATE TABLE "Ingrediente" (
     "idIngrediente" INTEGER NOT NULL,
     "nome" TEXT NOT NULL,
     "preco" DOUBLE PRECISION NOT NULL,
-    "idPizza" INTEGER NOT NULL,
 
     CONSTRAINT "Ingrediente_pkey" PRIMARY KEY ("idIngrediente")
 );
@@ -103,6 +106,29 @@ CREATE TABLE "Menu" (
 
     CONSTRAINT "Menu_pkey" PRIMARY KEY ("idMenu")
 );
+
+-- CreateTable
+CREATE TABLE "_IngredienteToPizza" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL,
+
+    CONSTRAINT "_IngredienteToPizza_AB_pkey" PRIMARY KEY ("A","B")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pedido_idCarrinho_key" ON "Pedido"("idCarrinho");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pedido_idEntrega_key" ON "Pedido"("idEntrega");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pedido_idPagamento_key" ON "Pedido"("idPagamento");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pedido_idAvaliacao_key" ON "Pedido"("idAvaliacao");
+
+-- CreateIndex
+CREATE INDEX "_IngredienteToPizza_B_index" ON "_IngredienteToPizza"("B");
 
 -- AddForeignKey
 ALTER TABLE "Cliente" ADD CONSTRAINT "Cliente_emailCliente_fkey" FOREIGN KEY ("emailCliente") REFERENCES "Pessoa"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -120,10 +146,25 @@ ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_emailCliente_fkey" FOREIGN KEY ("ema
 ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_emailFuncionario_fkey" FOREIGN KEY ("emailFuncionario") REFERENCES "Funcionario"("emailFuncionario") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_idCarrinho_fkey" FOREIGN KEY ("idCarrinho") REFERENCES "CarrinhoDeCompras"("idCarrinho") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_idEntrega_fkey" FOREIGN KEY ("idEntrega") REFERENCES "Entrega"("idEntrega") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_idPagamento_fkey" FOREIGN KEY ("idPagamento") REFERENCES "Pagamento"("idPagamento") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_idAvaliacao_fkey" FOREIGN KEY ("idAvaliacao") REFERENCES "Avaliacao"("idAvaliacao") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Pizza" ADD CONSTRAINT "Pizza_idCarrinho_fkey" FOREIGN KEY ("idCarrinho") REFERENCES "CarrinhoDeCompras"("idCarrinho") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Pizza" ADD CONSTRAINT "Pizza_idMenu_fkey" FOREIGN KEY ("idMenu") REFERENCES "Menu"("idMenu") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ingrediente" ADD CONSTRAINT "Ingrediente_idPizza_fkey" FOREIGN KEY ("idPizza") REFERENCES "Pizza"("idPizza") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "_IngredienteToPizza" ADD CONSTRAINT "_IngredienteToPizza_A_fkey" FOREIGN KEY ("A") REFERENCES "Ingrediente"("idIngrediente") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_IngredienteToPizza" ADD CONSTRAINT "_IngredienteToPizza_B_fkey" FOREIGN KEY ("B") REFERENCES "Pizza"("idPizza") ON DELETE CASCADE ON UPDATE CASCADE;
