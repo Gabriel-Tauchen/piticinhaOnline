@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Pessoa {
-  email String @id
+  email String @id @unique
   nome String 
   senha String
   cliente Cliente? @relation("pessoaCliente")
@@ -23,7 +23,7 @@ model Pessoa {
 }
 
 model Cliente {
-  emailCliente String @id
+  emailCliente String @id @unique 
   pessoa Pessoa @relation("pessoaCliente", fields: [emailCliente], references: [email])
   endereco String
   telefone String
@@ -32,14 +32,14 @@ model Cliente {
 }
 
 model Funcionario{
-  emailFuncionario String @id
+  emailFuncionario String @id @unique 
   pessoa Pessoa @relation("pessoaFuncionario", fields: [emailFuncionario], references: [email])
   cargo String
   pedidos Pedido[]
 }
 
 model Avaliacao{
-  idAvaliacao Int @id
+  idAvaliacao Int @id @unique @default(autoincrement())
   nota Int
   comentario String
   data DateTime
@@ -49,7 +49,7 @@ model Avaliacao{
   }
 
 model Pedido {
-  idPedido Int @id
+  idPedido Int @id @unique @default(autoincrement())
   valotTotal Int
   statusPedido StatusPedido
   cliente Cliente @relation(fields: [emailCliente], references: [emailCliente])
@@ -67,14 +67,14 @@ model Pedido {
 }
 
 model Entrega{
-  idEntrega Int @id
+  idEntrega Int @id @unique @default(autoincrement())
   tipoEntrega Int
   tempoEstimado Int
   pedido Pedido?
 }
 
 model Pagamento{
-  idPagamento Int @id
+  idPagamento Int @id @unique @default(autoincrement())
   tipoPagamento Int
   isPago Boolean
   pedido Pedido?
@@ -89,14 +89,14 @@ enum StatusPedido{
 }
 
 model CarrinhoDeCompras{
-  idCarrinho Int @id
+  idCarrinho Int @id @unique @default(autoincrement())
   subtotal Float
   listaPizzas Pizza[]
   pedido Pedido?
 }
 
 model Pizza{
-  idPizza Int @id
+  idPizza Int @id @unique @default(autoincrement())
   nome String
   preco Float
   tamanho Int
@@ -108,13 +108,13 @@ model Pizza{
 }
 
 model Ingrediente{
-  idIngrediente Int @id
+  idIngrediente Int @id @unique @default(autoincrement())
   nome String
   preco Float
   pizza Pizza[]
 }
 
 model Menu{
-  idMenu Int @id
+  idMenu Int @id @unique @default(autoincrement())
   listaPizzas Pizza[]
 }
