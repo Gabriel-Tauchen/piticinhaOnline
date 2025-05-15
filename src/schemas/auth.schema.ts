@@ -7,6 +7,7 @@
  *   post:
  *     tags:
  *       - Autenticação
+ *     security: []
  *     summary: Realiza login e gera um token JWT
  *     requestBody:
  *       required: true
