@@ -1,6 +1,7 @@
 import express from 'express';
 import pizzaRoutes from './routes/pizza.router';
 import avaliacaoRoutes from './routes/avaliacao.router';
+import authRoutes from './routes/auth.route';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 const app = express();
@@ -17,11 +18,13 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/pizzas', pizzaRoutes);
 app.use('/avaliacoes', avaliacaoRoutes);
+app.use('/auth', authRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {console.log(`Server running on port ${PORT}`);});
