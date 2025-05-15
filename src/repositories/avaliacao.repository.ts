@@ -6,7 +6,13 @@ export const getAllAvaliacoes = async (): Promise<Avaliacao[]> => {
 export const getAvaliacaoById=async(id: number):Promise<Avaliacao | null> => {
  return prisma.avaliacao.findUnique({ where: { idAvaliacao: id } });
 };
-export const createAvaliacao = async (data: Omit<Avaliacao, 'idAvaliacao'>):
-Promise<Avaliacao> => {
- return prisma.avaliacao.create({ data: data as Prisma.AvaliacaoUncheckedCreateInput });
+export const createAvaliacao = async (data: Omit<Avaliacao, 'idAvaliacao'>): Promise<Avaliacao> => {
+  return prisma.avaliacao.create({
+    data: {
+      nota: data.nota,
+      comentario: data.comentario,
+      data: data.data,
+      emailCliente: data.emailCliente,
+    },
+  });
 };

@@ -1,14 +1,17 @@
 import { PrismaClient, StatusPedido } from '../generated/prisma';
+import argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  const senhaHash = await argon2.hash('senha123'); //Gerar hash
+  const senhaHash2 = await argon2.hash('senha456'); //Gerar hash
   // Criando uma pessoa
   const pessoa = await prisma.pessoa.create({
     data: {
       email: 'cliente@example.com',
       nome: 'João Cliente',
-      senha: 'senha123',
+      senha: senhaHash,
     },
   });
 
@@ -26,7 +29,7 @@ async function main() {
     data: {
       email: 'funcionario@example.com',
       nome: 'Ana Funcionária',
-      senha: 'senha456',
+      senha: senhaHash2,
     },
   });
 

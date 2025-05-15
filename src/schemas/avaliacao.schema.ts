@@ -24,26 +24,26 @@
 *                       $ref: '#/components/schemas/AvaliacaoInput'
 *       responses:
 *           201:
-*               description: Avaliacao criado
+*               description: Avaliacao criada
 * /avaliacoes/{id}:
-*       get:
-*           tags: [Avaliacoes]
-*           summary: Busca uma avaliacao por ID
-*           parameters:
-*               - emailCliente: id
-*                 in: path
-*                 required: true
-*                 schema:
-*                     type: integer
-*           responses:
-*               200:
-*                   description: Avaliacao encontrada
-*                   content:
-*                       application/json:
-*                           schema:
-*                               $ref:'#/components/schemas/Avaliacao'
-*                                   404:
-*                                       description: Avaliacao não encontrada
+*   get:
+*       tags: [Avaliacoes]
+*       summary: Busca uma avaliacao por ID
+*       parameters:
+*           - name: id
+*             in: path
+*             required: true
+*             schema:
+*                 type: integer
+*       responses:
+*           200:
+*               description: Avaliacao encontrada
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Avaliacao'
+*           404:
+*               description: Avaliacao não encontrada
 * components:
 *   schemas:
 *       Avaliacao:
@@ -52,24 +52,24 @@
 *               idAvaliacao:
 *                   type: integer
 *               nota:
-*                   type: integer
+*                   type: number
 *               comentario:
 *                   type: string
 *               data:
-*                   type: date
+*                   type: string
+*                   format: date-time
 *               emailCliente:
-*                   type: string:
+*                   type: string
 *       AvaliacaoInput:
 *           type: object
-*               properties:
-*                   idAvaliacao:
-*                       type: string
-*                   nota:
-*                       type: integer
-*                   comentario:
-*                       type: integer
-*                   data:
-*                       type: date
-*                   emailCliente:
-*                       type: string
+*           properties:
+*               nota:
+*                   type: number
+*               comentario:
+*                   type: string
+*               data:
+*                   type: string
+*                   format: date-time
+*               emailCliente:
+*                   type: string
 */

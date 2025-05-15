@@ -6,7 +6,14 @@ export const getAllPizzas = async (): Promise<Pizza[]> => {
 export const getPizzaById=async(id: number):Promise<Pizza | null> => {
  return prisma.pizza.findUnique({ where: { idPizza: id } });
 };
-export const createPizza = async (data: Omit<Pizza, 'idPizza'>):
-Promise<Pizza> => {
- return prisma.pizza.create({ data: data as Prisma.PizzaUncheckedCreateInput });
+export const createPizza = async (data: Omit<Pizza, 'idPizza'>): Promise<Pizza> => {
+  return prisma.pizza.create({
+    data: {
+      nome: data.nome,
+      preco: data.preco,
+      tamanho: data.tamanho,
+      idCarrinho: data.idCarrinho,
+      idMenu: data.idMenu,
+    },
+  });
 };
