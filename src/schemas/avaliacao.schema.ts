@@ -44,6 +44,44 @@
 *                           $ref: '#/components/schemas/Avaliacao'
 *           404:
 *               description: Avaliacao não encontrada
+*   patch:
+*       tags: [Avaliacoes]
+*       summary: Atualiza uma avaliacao pelo ID
+*       parameters:
+*           - name: id
+*             in: path
+*             required: true
+*             schema:
+*                 type: integer
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/AvaliacaoInput'
+*       responses:
+*           200:
+*               description: Avaliacao atualizada com sucesso
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Avaliacao'
+*           404:
+*               description: Avaliacao não encontrada
+*   delete:
+*       tags: [Avaliacoes]
+*       summary: Remove uma avaliacao pelo ID
+*       parameters:
+*           - name: id
+*             in: path
+*             required: true
+*             schema:
+*                 type: integer
+*       responses:
+*           204:
+*               description: Avaliacao removida com sucesso
+*           404:
+*               description: Avaliacao não encontrada
 * components:
 *   schemas:
 *       Avaliacao:

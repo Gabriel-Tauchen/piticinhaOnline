@@ -16,3 +16,16 @@ export const createAvaliacao = async (data: Omit<Avaliacao, 'idAvaliacao'>): Pro
     },
   });
 };
+
+export const updateAvaliacao = async (id: number, data: Partial<Avaliacao>): Promise<Avaliacao | null> => {
+  return prisma.avaliacao.update({
+    where: { idAvaliacao: id },
+    data,
+  });
+};
+
+export const deleteAvaliacao = async (id: number): Promise<void> => {
+  await prisma.avaliacao.delete({
+    where: { idAvaliacao: id },
+  });
+};

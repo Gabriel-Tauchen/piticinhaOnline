@@ -44,6 +44,44 @@
 *                           $ref: '#/components/schemas/Pizza'
 *           404:
 *               description: Pizza não encontrada
+*   patch:
+*       tags: [Pizzas]
+*       summary: Atualiza uma pizza pelo ID
+*       parameters:
+*           - name: id
+*             in: path
+*             required: true
+*             schema:
+*                 type: integer
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/PizzaInput'
+*       responses:
+*           200:
+*               description: Pizza atualizada com sucesso
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Pizza'
+*           404:
+*               description: Pizza não encontrada
+*   delete:
+*       tags: [Pizzas]
+*       summary: Remove uma pizza pelo ID
+*       parameters:
+*           - name: id
+*             in: path
+*             required: true
+*             schema:
+*                 type: integer
+*       responses:
+*           204:
+*               description: Pizza removida com sucesso
+*           404:
+*               description: Pizza não encontrada
 * components:
 *   schemas:
 *       Pizza:

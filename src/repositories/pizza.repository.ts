@@ -17,3 +17,15 @@ export const createPizza = async (data: Omit<Pizza, 'idPizza'>): Promise<Pizza> 
     },
   });
 };
+export const updatePizza = async (id: number, data: Partial<Pizza>): Promise<Pizza | null> => {
+  return prisma.pizza.update({
+    where: { idPizza: id },
+    data,
+  });
+};
+
+export const deletePizza = async (id: number): Promise<void> => {
+  await prisma.pizza.delete({
+    where: { idPizza: id },
+  });
+};
