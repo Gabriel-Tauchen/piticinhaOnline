@@ -1,13 +1,20 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import cors from 'cors';
+
 
 import pizzaRoutes from './routes/pizza.router';
 import avaliacaoRoutes from './routes/avaliacao.router';
 import authRoutes from './routes/auth.route';
 import { authMiddleware } from './middlewares/auth.middleware';
+import carrinhoRoutes from './routes/carrinho.router';
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:5173', // ou use '*' para liberar para qualquer origem (não recomendado em produção)
+  credentials: true
+}));
 app.use(express.json());
 
 const swaggerOptions = {
@@ -43,6 +50,8 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/pizzas',authMiddleware, pizzaRoutes);
 app.use('/avaliacoes',authMiddleware, avaliacaoRoutes);
 app.use('/auth', authRoutes);
+app.use('/carrinhos', carrinhoRoutes);
+
 
 
 const PORT = process.env.PORT || 3000;
